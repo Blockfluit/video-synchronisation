@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Testroom #1",
+    "index": 0,
+    "loop": true,
+    "playlist": [
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "duration": 0
+      },
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Testroom #2",
+    "index": 0,
+    "loop": false,
+    "playlist": [
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "duration": 0
+      },
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      }
+    ]
+  }
+]

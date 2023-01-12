@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "get-video-duration": "^4.1.0",
+    "lodash": "^4.17.21",
+    "websocket": "^1.0.34",
+    "ws": "^8.11.0"
+  }
+}
