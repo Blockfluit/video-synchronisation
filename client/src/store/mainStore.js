@@ -6,6 +6,7 @@ let url = 'ws://localhost:3231' // websocketserver url example: 'ws://localhost:
 export const useMainStore = defineStore('main', () => {
     const ws = ref(new WebSocket(url))
     const isAdmin = ref(true)
+    const clientName = ref('')
     const roomName = ref('')
     const rooms = ref([])
     const chatbox = ref([])
@@ -14,5 +15,5 @@ export const useMainStore = defineStore('main', () => {
     const clients = ref(0)
     const video = ref(null)
 
-    return { ws, isAdmin, roomName, rooms, chatbox, time, duration, clients, video }
+    return { ws, isAdmin, clientName, roomName, rooms, chatbox, time, duration, clients, video }
 })

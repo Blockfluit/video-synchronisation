@@ -1,4 +1,4 @@
-import { Method, Type } from './types'
+import { Method, Type } from './api-consts'
 
 function send(websocket, message) {
     if(websocket.readyState === 1) {
@@ -32,9 +32,9 @@ function postRoom(websocket, roomName) {
     send(websocket, [{"method":Method.POST, "type":Type.ROOM}, {"room":roomName}])
 }
 
-function putChat(websocket, roomName, message) {
+function putChat(websocket, roomName, clientName, message) {
     console.log(websocket)
-    send(websocket, [{"method":Method.PUT, "type":Type.CHAT}, {"room":roomName, "clientName":"TestClient", "message":message}])
+    send(websocket, [{"method":Method.PUT, "type":Type.CHAT}, {"room":roomName, "clientName":clientName, "message":message}])
 }
 
 function patchPath(websocket, roomName, path) {

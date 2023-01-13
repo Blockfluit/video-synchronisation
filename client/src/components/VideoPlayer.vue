@@ -4,7 +4,7 @@ import ClientPanel from './ClientPanel.vue';
 import AdminPanel from './AdminPanel.vue';
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../store/mainStore'
-import api from '../api/websocketApi'
+import api from '../api/api-service'
 import { onMounted, ref } from 'vue';
 
 const mainStore = useMainStore()
@@ -12,7 +12,6 @@ const { roomName, ws, isAdmin, video, time, duration, chatbox, clients } = store
 const path = ref('')
 
 let latency = 0
-let intervalID = 0
 
 ws.value.onmessage = message => {
         let msg = JSON.parse(message.data)
@@ -28,7 +27,7 @@ ws.value.onmessage = message => {
 
         if(msg[0].method === 'trace' && msg[0].type === 'pong') {
             latency += performance.now()
-            video.value.currentTime += (latency / 1000)
+            video.value.currentTime += (latency / 1000 / 2)
         }
         
         if(msg[0].method === 'patch' && msg[0].type === 'chat') {
@@ -42,12 +41,6 @@ function ping() {
     latency -= performance.now()
 }
 
-function startTimer() {
-        time.value = video._value.currentTime
-        clearInterval(intervalID)
-        intervalID = setInterval(() => startTimer(), 500)
-    }
-
 function formatTime(sec) {
     if(!isNaN(sec)) {
         let data = new Date(parseInt(sec) * 1000).toISOString().substr(11, 8)
@@ -56,24 +49,33 @@ function formatTime(sec) {
     return '00:00:00'
 }
 
+function formatPath(path) {
+    let fileName = path.replace(/\.[^/.]+$/, "").split('/').pop()
+    return fileName
+}
+
 onMounted(() => {
     api.getStatus(ws.value, roomName.value)
-    startTimer()
+    video.value.onloadeddata = () => {
+        api.getStatus(ws.value, roomName.value)
+    }
+    video.value.ontimeupdate = () => {
+        time.value = video.value.currentTime
+    }
 }) 
 </script>
 
 
 
 <template>
-    <h1>{{ roomName }}</h1>
+    <h1 @click="roomName = ''">{{ roomName }}</h1>
     <div class="horizontal-container">
-        <div class="container-item-1">
-            <video ref="video" width="960" height="540">
-                <source :src="path" type="video/mp4">
-            </video>
-        </div>
-        <Chat class="container-item-2"/>
+        <video ref="video" width="960" height="540">
+            <source :src="path" type="video/mp4">
+        </video>
+        <Chat/>
     </div>
+    <p>{{ formatPath(path) }}</p>
     <p>{{ formatTime(time) + '/' + formatTime(duration) }}</p>
     <ClientPanel />
     <AdminPanel v-if="isAdmin"/>
@@ -88,20 +90,12 @@ video::-webkit-media-controls-enclosure {
 .horizontal-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
-    
 }
 
-.container-item-1 {
-    box-shadow: 0px 0px 13px 11px rgba(0,0,0,0.49);
-    border: 1px solid white;
-}
-
-.container-item-2{
-    flex-basis: 20%;
-    margin-right: 5%;
-    box-shadow: 0px 0px 13px 11px rgba(0,0,0,0.49);
-    border: 1px solid white;
+video {
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
+    border-radius: 8px;
 }
 </style>

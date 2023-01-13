@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../store/mainStore'
-import api from '../api/websocketApi'
+import api from '../api/api-service'
 import { ref } from 'vue';
 
 const mainStore = useMainStore()
@@ -39,7 +39,7 @@ function formatTime(sec) {
 </script>
 
 <template>
-    <div class="container">
+    <div class="panel-container">
         <p>Admin panel</p>
         <button @click="play()" type="button">play/pause</button>
         <button @click="syncClients()" type="button">sync clients</button>
@@ -52,9 +52,11 @@ function formatTime(sec) {
 </template>
 
 <style scoped>
-.container {
+.panel-container {
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
+    border-radius: 8px;
     margin-top: 10px;
-    border: 1px solid white;
+    padding: 5px;
 }
 
 .time-slider {
