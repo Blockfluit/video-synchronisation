@@ -5,10 +5,12 @@
     "loop": true,
     "playlist": [
       {
+        "thumbnail": "../../public/South%20Park.jpeg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "duration": 0
       },
       {
+        "thumbnail": "../../public/De%20Diamantjes.jpeg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
         "duration": 0
       }
@@ -20,10 +22,12 @@
     "loop": false,
     "playlist": [
       {
+        "thumbnail": "../../public/South%20Park.jpeg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "duration": 0
       },
       {
+        "thumbnail": "../../public/De%20Diamantjes.jpeg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
         "duration": 0
       }

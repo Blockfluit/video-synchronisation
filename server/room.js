@@ -10,6 +10,7 @@ class Room {
         this.duration = 0
         this.loop = false 
         this.autoplay = true
+        this.thumbnail = ''
         this.playlist = []
         this.clients = new Set()
         this.chat = []

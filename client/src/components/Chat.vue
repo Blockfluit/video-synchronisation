@@ -1,16 +1,17 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../store/mainStore'
-import api from '../api/websocketApi'
+import api from '../api/api-service'
 import { ref } from 'vue';
 
 const mainStore = useMainStore()
-const { ws, roomName, chatbox, clients } = storeToRefs(mainStore)
+const { ws, clientName, roomName, chatbox, clients } = storeToRefs(mainStore)
 
 const chatMessage = ref('')
+clientName.value = (Math.random() + 1).toString(36).substring(7)
 
 function sendChat() {
-    api.putChat(ws.value, roomName.value, chatMessage.value)
+    api.putChat(ws.value, roomName.value, clientName.value, chatMessage.value)
     chatMessage.value = ''
 }
 </script>
@@ -18,7 +19,10 @@ function sendChat() {
 <template>
      <div class="chat-container">
         <ul>
-            <li v-for="message in chatbox">{{ message.clientName + ': ' +message.message }}</li>
+            <template v-for="message in chatbox">
+                <li v-if="message.clientName !== clientName">{{ message.clientName + ': ' + message.message }}</li>
+                <li class="right" v-else>{{ message.message }}</li>
+            </template>
         </ul>
         <div class="horizontal-container">
             <p> {{ clients }} </p>
@@ -33,23 +37,31 @@ function sendChat() {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
+    border-radius: 8px;
+    margin-right: 3%;
+    min-width: 300px;
 }
 
 .horizontal-container {
     display: flex;
     flex-direction: row;
-    height: 25px;
+    align-content: center;
+    justify-content: space-evenly;
+    margin: 5px;
+    max-height: 20px;
 }
 
-p {
-    flex-grow: 2;
+ul {
+    padding: 0;
+    margin: 30px;
 }
 
-input {
-    flex-grow: 4;
+li {
+    list-style: none;
 }
 
-button {
-    flex-grow: 3;
+.right {
+    text-align: right;
 }
 </style>

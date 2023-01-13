@@ -1,19 +1,19 @@
-const { Method, Type, Scope } = require('./types')
+const { Method, Type, Scope } = require('./api-consts')
 
-//receiver can be client, room or rooms
+// Receiver can be client, room or rooms
 function send(receiver, message, scope) {
     if(scope === Scope.GLOBAL) {
-        //sends message to all clients across all rooms
+        // Sends message to all clients across all rooms
         receiver.forEach(client => {
             client.send(JSON.stringify(message))
         })
     } else if(scope === Scope.LOCAL) {
-        //sends message to all clients in specified room
+        // Sends message to all clients in specified room
         receiver.clients.forEach(client => {
             client.send(JSON.stringify(message))
         })
     } else if(scope === Scope.CLIENT) {
-        //sends message to specific client
+        // Sends message to specific client
         receiver.send(JSON.stringify(message))
     } else {
         console.log('invalid scope')
@@ -42,7 +42,7 @@ function patchChat(receiver, room, scope) {
 
 module.exports = { ping, patchStatus, patchRooms, patchChat }
 
-//helper functions
+// Helper functions
 function updatedRooms(rooms) {
     let tempRooms = []
     Array.from(rooms).forEach((room) => {
@@ -54,10 +54,13 @@ function updatedRooms(rooms) {
 }
 
 function getTime(room) {
-    if(room.time === 0) return 0
-    if(room.play === true) {
+    if(room.time === 0) {
+        return 0
+    }
+    else if(room.play === true) {
         return room.time + (performance.now() / 1000)
-    } else {
+    } 
+    else {
         return room.time
     } 
 }

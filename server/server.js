@@ -1,7 +1,7 @@
-const { Method, Type, Scope } = require('./api/types')
-const data = require('./rooms.json')
+const api = require('./api/api-service.js')
+const { Method, Type, Scope } = require('./api/api-consts')
+const data = require('./src/rooms.json')
 const  { Room } = require('./room.js')
-const api = require('./api/clientApi.js')
 const { getVideoDurationInSeconds } = require('get-video-duration')
 const WebSocketServer = require('websocket').server
 const http = require('http')
@@ -12,34 +12,54 @@ const wss = new WebSocketServer({
 const port = 3231
 
 let rooms = new Set()
-let clients = new Set()
+let clientsInLobby = new Set()
+let allClients = new Set()
 let intervalID = 0
-let init = false
 
-// loads predefined rooms 
-data.forEach(entry => {
-    let room = new Room(entry.name)
-    room.index = entry.index
-    room.playlist = entry.playlist
-    setPlaylistDuration(room)
-    rooms.add(room)
-})
+preloadRooms()
+updateIndex()
 
-checkRoomsIndex()
-
-function setPathRooms() {
-    console.log(rooms)
-    rooms.forEach((room) => {
-        room.path = room.playlist[room.index].path
-    room.duration = room.playlist[room.index].duration
-    console.log(room.playlist[0])
+// Loads predefined rooms 
+function preloadRooms() {
+    data.forEach(entry => {
+        let room = new Room(entry.name)
+        room.index = entry.index
+        room.thumbnail = entry.thumbnail
+        room.playlist = entry.playlist
+        room.playlist.forEach((video, index) => {
+            getVideoDurationInSeconds(video.path).then((duration) => {
+                if(index === room.index) {
+                    room.duration = duration
+                    room.path = video.path
+                }
+                video.duration = duration
+                rooms.add(room)
+            })
+        })
     })
 }
 
-// returns actual room object
-function getRoom(roomName) {
-    var room = Array.from(rooms).find(room => room.name === roomName)
-    return room
+function updateIndex() {
+    rooms.forEach(room => {
+        if(getTime(room) > room.playlist[room.index].duration) {
+            if(room.loop === false) {
+                if(room.index === (room.playlist.length - 1)) {
+                    room.index = 0
+                    room.path = room.playlist[0].path
+                    room.duration = room.playlist[0].duration
+                } else {
+                    room.index++
+                    room.path = room.playlist[room.index].path
+                    room.duration = room.playlist[room.index].duration
+                }
+            }
+            setTime(room, 0)
+            api.patchStatus(room, room, Scope.LOCAL)
+            api.patchRooms(allClients, rooms, Scope.GLOBAL)
+        }
+    })
+    clearInterval(intervalID)
+    intervalID = setInterval(() => updateIndex(), 2000)
 }
 
 function checkRoom(roomName) {
@@ -58,41 +78,17 @@ function getTime(room) {
         return room.time
     } 
 }
-// if video has ended index
-function checkRoomsIndex() {
-    rooms.forEach(room => {
-        if(getTime(room) > room.playlist[room.index].duration) {
-            if(room.loop === false) {
-                if(room.index === (room.playlist.length - 1)) {
-                    room.index = 0
-                    room.path = room.playlist[0].path
-                    room.duration = room.playlist[0].duration
-                } else {
-                    room.index++
-                    room.path = room.playlist[room.index].path
-                    room.duration = room.playlist[room.index].duration
-                }
-            }
-            setTime(room, 0)
-            api.patchStatus(room, room, Scope.LOCAL)
-        }
-    })
-    clearInterval(intervalID)
-    intervalID = setInterval(() => checkRoomsIndex(), 2000)
+
+// Returns actual room object
+function getRoom(roomName) {
+    var room = Array.from(rooms).find(room => room.name === roomName)
+    return room
 }
 
-function removeFromRooms(client) {
+function removeFromOtherRooms(client) {
     rooms.forEach(room => {
         room.clients.delete(client)
     })
-}
-
-function setPlaylistDuration(room) {
-    room.playlist.forEach((video => {
-        getVideoDurationInSeconds(video.path).then((duration) => {
-            video.duration = duration
-        })
-    }))
 }
 
 function setTime(room, clientTime) {
@@ -114,12 +110,14 @@ function setTime(room, clientTime) {
 
 wss.on('request', request => {
     let client = request.accept(null, request.origin)
-    clients.add(client)
+    console.log('Client has connected')
+    allClients.add(client)
+    clientsInLobby.add(client)
 
-    // listenes to message and acts on them
+    // Listenes to messages and acts on them
     client.on('message', message => {
         let msg = JSON.parse(message.utf8Data)
-        let room
+        let room = null
 
         if(msg[0].method === Method.TRACE) {
             switch(msg[0].type) {
@@ -131,20 +129,21 @@ wss.on('request', request => {
         else if(msg[0].method === Method.GET) {
             switch(msg[0].type) {
                 case Type.STATUS:
+                    clientsInLobby.delete(client)
                     room = getRoom(msg[1].room)
                     room.clients.add(client)
                     if(room.initialized === false) room.initialized = true
                     if(room.time === 0) {
                         setTime(room)
-                        api.patchRooms(clients, rooms, Scope.GLOBAL)
+                        api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     }
                     api.patchStatus(client, room, Scope.CLIENT)
                     api.patchChat(room, room, Scope.LOCAL)
                     break
                 case Type.ROOMS:
-                    init === false ? setPathRooms() : init = true
+                    clientsInLobby.add(client)
                     api.patchRooms(client, rooms, Scope.CLIENT)
-                    removeFromRooms(client)
+                    removeFromOtherRooms(client)
                     rooms.forEach((room) => {
                         api.patchChat(room, room, Scope.LOCAL)
                     }) 
@@ -167,7 +166,7 @@ wss.on('request', request => {
                         room = new Room(msg[1].room)
                         console.log(`room created: ${room.name}`)
                         rooms.add(room)
-                        api.patchRooms(clients, rooms, Scope.GLOBAL)
+                        api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     }
                     break
                 case Type.PATH:
@@ -175,12 +174,13 @@ wss.on('request', request => {
                     room = getRoom(msg[1].room)
                     room.playlist[1][playist[0].current] = msg[1].path
                     room.time = 0
-                    api.patchStatus(clients, room, Scope.GLOBAL)
+                    api.patchStatus(clientsInLobby, room, Scope.GLOBAL)
                     break
                 case Type.TIME:
                     room = getRoom(msg[1].room)
                     setTime(room, msg[1].time)
                     api.patchStatus(room, room, Scope.LOCAL)
+                    api.patchChat(clientsInLobby, rooms, Scope.GLOBAL)
                     break
             }
         } 
@@ -195,7 +195,7 @@ wss.on('request', request => {
                     room.play = !room.play
                     setTime(room)
                     api.patchStatus(room, room, Scope.LOCAL)
-                    api.patchRooms(clients, rooms, Scope.GLOBAL)
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     break
                 case Type.PATH:
                     room = getRoom(msg[1].room)
@@ -203,8 +203,8 @@ wss.on('request', request => {
                     setTime(room, 0)
                     getVideoDurationInSeconds(msg[1].path).then((duration) => {
                         room.duration = duration
+                        api.patchStatus(room, room, Scope.LOCAL)
                     })
-                    api.patchStatus(room, room, Scope.LOCAL)
                     break
             }
 
@@ -219,8 +219,6 @@ wss.on('request', request => {
             }
         }
     })
-
-    client.on('open', () => console.log('Client has connected'))
 
     client.on('close', () => {
         rooms.forEach((room) => {
