@@ -5,12 +5,12 @@
     "loop": true,
     "playlist": [
       {
-        "thumbnail": "../../public/South%20Park.jpeg",
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "../../public/De%20Diamantjes.jpeg",
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
         "duration": 0
       }
@@ -22,12 +22,12 @@
     "loop": false,
     "playlist": [
       {
-        "thumbnail": "../../public/South%20Park.jpeg",
+        "thumbnail": "https://www.al.com/resizer/uQVPmZZslOXT0e_5eAHQa1rZ9So=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width2048/img/entertainment_impact/photo/20563816-standard.jpg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "../../public/De%20Diamantjes.jpeg",
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
         "duration": 0
       }

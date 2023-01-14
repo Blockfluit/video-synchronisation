@@ -1,7 +1,7 @@
 const api = require('./api/api-service.js')
 const { Method, Type, Scope } = require('./api/api-consts')
 const data = require('./src/rooms.json')
-const  { Room } = require('./room.js')
+const { Room } = require('./room.js')
 const { getVideoDurationInSeconds } = require('get-video-duration')
 const WebSocketServer = require('websocket').server
 const http = require('http')
@@ -180,7 +180,7 @@ wss.on('request', request => {
                     room = getRoom(msg[1].room)
                     setTime(room, msg[1].time)
                     api.patchStatus(room, room, Scope.LOCAL)
-                    api.patchChat(clientsInLobby, rooms, Scope.GLOBAL)
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     break
             }
         } 
