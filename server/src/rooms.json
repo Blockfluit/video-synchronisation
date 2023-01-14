@@ -5,13 +5,13 @@
     "loop": true,
     "playlist": [
       {
-        "thumbnail": "../../public/South%20Park.jpeg",
-        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
+        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "../../public/De%20Diamantjes.jpeg",
-        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "thumbnail": "https://api.sensegang.nl/thumbnails/Samaritan.jpeg",
+        "path": "https://sensegang.nl/filetransfer/videos/Random/i%27m%20rich%20haha.mp4",
         "duration": 0
       }
     ]
@@ -22,13 +22,30 @@
     "loop": false,
     "playlist": [
       {
-        "thumbnail": "../../public/South%20Park.jpeg",
-        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "thumbnail": "https://api.sensegang.nl/thumbnails/Samaritan.jpeg",
+        "path": "https://api.sensegang.nl/api/stream/633b1beb2314b48c2cda5106/63492fa3d551719c033f93c8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTg4YjNmMWJjNGVkYzgyODcwM2JhMiIsInVzZXJuYW1lIjoibGVhZmFyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjczNzE0MjA0LCJleHAiOjE2NzYzOTI2MDR9.xhoTy7aVfygMe7mKyF-26s48PPhrsvqPHp-RNkpBL24",
         "duration": 0
       },
       {
-        "thumbnail": "../../public/De%20Diamantjes.jpeg",
-        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
+        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Testroom #3",
+    "index": 0,
+    "loop": false,
+    "playlist": [
+      {
+        "thumbnail": "https://api.sensegang.nl/thumbnails/The%20Witcher.jpeg",
+        "path": "https://api.sensegang.nl/api/stream/633b1beb2314b48c2cda5106/63492fa3d551719c033f93c8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTg4YjNmMWJjNGVkYzgyODcwM2JhMiIsInVzZXJuYW1lIjoibGVhZmFyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjczNzE0MjA0LCJleHAiOjE2NzYzOTI2MDR9.xhoTy7aVfygMe7mKyF-26s48PPhrsvqPHp-RNkpBL24",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
+        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
         "duration": 0
       }
     ]
