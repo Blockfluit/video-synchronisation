@@ -48,6 +48,7 @@ function updatedRooms(rooms) {
     Array.from(rooms).forEach((room) => {
         let tempRoom = Object.assign({}, room)
         tempRoom.time = getTime(tempRoom)
+        tempRoom.clients = tempRoom.clients.size
         tempRooms.push(tempRoom)
     })
     return tempRooms
