@@ -26,12 +26,12 @@ function ping(client) {
 }
 
 function patchStatus(receiver, room, scope) {
-    const message = [{"method":Method.PATCH, "type":Type.STATUS}, {"play":room.play, "time":getTime(room), "duration":room.duration, "initialized":room.initialized, "index":room.index, "path":room.path, "playlist":room.playlist}]
+    const message = [{"method":Method.PATCH, "type":Type.STATUS}, formatRoom(room)]
     send(receiver, message, scope)
 }
 
 function patchRooms(receiver, rooms, scope) {
-    const message = [{"method":Method.PATCH, "type":Type.ROOMS}, updatedRooms(rooms)]
+    const message = [{"method":Method.PATCH, "type":Type.ROOMS}, formatRooms(rooms)]
     send(receiver, message, scope)
 }
 
@@ -43,12 +43,18 @@ function patchChat(receiver, room, scope) {
 module.exports = { ping, patchStatus, patchRooms, patchChat }
 
 // Helper functions
-function updatedRooms(rooms) {
+function formatRoom(room) {
+    let formattedRoom = Object.assign({}, room)
+    formattedRoom.time = getTime(formattedRoom)
+    formattedRoom.clients = formattedRoom.clients.size
+    return formattedRoom
+}
+
+function formatRooms(rooms) {
     let tempRooms = []
     Array.from(rooms).forEach((room) => {
-        let tempRoom = Object.assign({}, room)
-        tempRoom.time = getTime(tempRoom)
-        tempRooms.push(tempRoom)
+        let formattedRoom = formatRoom(room)
+        tempRooms.push(formattedRoom)
     })
     return tempRooms
 }

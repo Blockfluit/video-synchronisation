@@ -5,11 +5,11 @@ import AdminPanel from './AdminPanel.vue';
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../store/mainStore'
 import api from '../api/api-service'
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref } from 'vue';
+import feather from 'feather-icons';
 
 const mainStore = useMainStore()
-const { roomName, ws, isAdmin, video, time, duration, chatbox, clients } = storeToRefs(mainStore)
-const path = ref('')
+const { ws, currentRoom, isAdmin, video, time, chat } = storeToRefs(mainStore)
 
 let latency = 0
 
@@ -18,9 +18,8 @@ ws.value.onmessage = message => {
 
         if(msg[0].method === 'patch' && msg[0].type === 'status') {
             ping()
-            if(path.value !== msg[1].path) video.value.load() //loads video if source has changed
-            path.value = msg[1].path
-            duration.value = msg[1].duration
+            if(currentRoom.value.path !== msg[1].path) video.value.load() //loads video if source has changed
+            currentRoom.value = msg[1]
             video.value.currentTime = msg[1].time
             msg[1].play ? video.value.play() : video.value.pause()
         }
@@ -31,8 +30,7 @@ ws.value.onmessage = message => {
         }
         
         if(msg[0].method === 'patch' && msg[0].type === 'chat') {
-            chatbox.value = msg[1].chat
-            clients.value = msg[1].clients
+            chat.value = msg[1]
         }
 }
 
@@ -54,44 +52,77 @@ function formatPath(path) {
     return fileName
 }
 
+function onClick() {
+    video.value = null
+    currentRoom.value = null
+    api.getRooms(ws.value)
+}
+
 onMounted(() => {
-    api.getStatus(ws.value, roomName.value)
+    feather.replace();
+    api.getStatus(ws.value, currentRoom.value.name)
     video.value.onloadeddata = () => {
-        api.getStatus(ws.value, roomName.value)
+        setTimeout(() => api.getStatus(ws.value, currentRoom.value.name), 200)
     }
     video.value.ontimeupdate = () => {
         time.value = video.value.currentTime
     }
-}) 
+})
+
+onUpdated(() => {
+    feather.replace();
+})
 </script>
 
 
 
 <template>
-    <h1 @click="roomName = ''">{{ roomName }}</h1>
-    <div class="horizontal-container">
-        <video ref="video" width="960" height="540">
-            <source :src="path" type="video/mp4">
-        </video>
-        <Chat/>
+    <div @click="onClick()" class="back-wrapper">
+        <i data-feather="chevron-left"></i>
+        <h1 style="margin-left: 10px;" >{{ currentRoom.name }}</h1>
     </div>
-    <p>{{ formatPath(path) }}</p>
-    <p>{{ formatTime(time) + '/' + formatTime(duration) }}</p>
-    <ClientPanel />
-    <AdminPanel v-if="isAdmin"/>
+    <div class="horizontal-container">
+        <video ref="video" class="video-player">
+            <source :src="currentRoom.path" type="video/mp4">
+        </video>
+        <Chat />
+    </div>
+    <div style="margin-left: 50px; margin-top: 5px;">
+        <div style="display: flex; justify-content: space-between; width: 70vw;">
+            <ClientPanel/>
+            <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
+            <p>{{ formatPath(currentRoom.path) }}</p>
+            
+        </div>
+        <AdminPanel v-if="isAdmin"/>
+    </div>
 </template>
 
 
 
 <style scoped>
+.back-wrapper {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    margin: 20px 0px 0px 20px; 
+    cursor: pointer;
+}
+
 video::-webkit-media-controls-enclosure {
   display:none !important;
 }
 .horizontal-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    margin-top: 20px;
     width: 100%;
+}
+.video-player {
+    width: 70vw;
+    max-height: 70vh;
+    margin-left: 50px;
 }
 
 video {
