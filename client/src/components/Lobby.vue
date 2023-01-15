@@ -1,8 +1,9 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../store/mainStore";
+import feather from "feather-icons";
 import api from "../api/api-service";
-import { onMounted } from "vue";
+import { onMounted, onUpdated } from "vue";
 
 const mainStore = useMainStore();
 const { ws, roomName, rooms, clients } = storeToRefs(mainStore);
@@ -54,7 +55,12 @@ function formatPath(path) {
 
 onMounted(() => {
   api.getRooms(ws.value);
+  feather.replace();
 });
+
+onUpdated(()=> {
+  feather.replace();
+})
 </script>
 
 <template>
@@ -92,7 +98,7 @@ onMounted(() => {
                     'not-live': !room.play,
                   }"
                 ></div>
-                <p class="room-participants">0 Viewers</p>
+                <p class="room-participants">0<i data-feather="user"></i></p>
               </div>
               <p class="room-time">
                 {{ formatTime(room.time) }}/{{
@@ -136,6 +142,14 @@ onMounted(() => {
   padding: 10px 10px;
   height: 79vh;
 }
+.room-participants {
+  display: flex;
+  align-items: center;
+}
+.room-participants svg {
+  height: 14px;
+  stroke-width: 2;
+}
 .cinema-container {
   padding: 10px 0px;
 }
@@ -170,15 +184,15 @@ onMounted(() => {
   padding: 10px 20px 10px 20px;
   margin: 0;
   overflow: hidden;
-  min-width: 40%;
-  max-width: 40%;
+  min-width: 50%;
+  max-width: 50%;
 }
 .room-info h2 {
   font-weight: bold;
   margin: 0;
 }
 .room-image {
-  width: 60%;
+  width: 50%;
 }
 .room-image img {
   object-fit: cover;
@@ -186,6 +200,8 @@ onMounted(() => {
   width: 100%;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  -webkit-box-shadow: -10px 0px 8px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: -4px 0px 8px 0px rgba(0, 0, 0, 0.5);
 }
 .live {
   animation: blinker 2s linear infinite;
