@@ -8,8 +8,7 @@ import api from '../api/api-service'
 import { onMounted, ref } from 'vue';
 
 const mainStore = useMainStore()
-const { roomName, ws, isAdmin, video, time, duration, chatbox, clients } = storeToRefs(mainStore)
-const path = ref('')
+const { ws, currentRoom, isAdmin, video, time, chat } = storeToRefs(mainStore)
 
 let latency = 0
 
@@ -18,9 +17,8 @@ ws.value.onmessage = message => {
 
         if(msg[0].method === 'patch' && msg[0].type === 'status') {
             ping()
-            if(path.value !== msg[1].path) video.value.load() //loads video if source has changed
-            path.value = msg[1].path
-            duration.value = msg[1].duration
+            if(currentRoom.value.path !== msg[1].path) video.value.load() //loads video if source has changed
+            currentRoom.value = msg[1]
             video.value.currentTime = msg[1].time
             msg[1].play ? video.value.play() : video.value.pause()
         }
@@ -31,8 +29,7 @@ ws.value.onmessage = message => {
         }
         
         if(msg[0].method === 'patch' && msg[0].type === 'chat') {
-            chatbox.value = msg[1].chat
-            clients.value = msg[1].clients
+            chat.value = msg[1]
         }
 }
 
@@ -55,14 +52,14 @@ function formatPath(path) {
 }
 
 function onClick() {
-    roomName.value = ''
+    video.value = null
+    currentRoom.value = null
     api.getRooms(ws.value)
 }
 
 onMounted(() => {
-    api.getStatus(ws.value, roomName.value)
     video.value.onloadeddata = () => {
-        api.getStatus(ws.value, roomName.value)
+        setTimeout(() => api.getStatus(ws.value, currentRoom.value.name), 200)
     }
     video.value.ontimeupdate = () => {
         time.value = video.value.currentTime
@@ -73,15 +70,15 @@ onMounted(() => {
 
 
 <template>
-    <h1 @click="onClick()">{{ roomName }}</h1>
+    <h1 @click="onClick()">{{ currentRoom.name }}</h1>
     <div class="horizontal-container">
         <video ref="video" width="960" height="540">
-            <source :src="path" type="video/mp4">
+            <source :src="currentRoom.path" type="video/mp4">
         </video>
         <Chat/>
     </div>
-    <p>{{ formatPath(path) }}</p>
-    <p>{{ formatTime(time) + '/' + formatTime(duration) }}</p>
+    <p>{{ formatPath(currentRoom.path) }}</p>
+    <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
     <ClientPanel />
     <AdminPanel v-if="isAdmin"/>
 </template>
