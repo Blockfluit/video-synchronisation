@@ -6,7 +6,7 @@ import api from "../api/api-service";
 import { onMounted, onUpdated } from "vue";
 
 const mainStore = useMainStore();
-const { ws, roomName, rooms, clients } = storeToRefs(mainStore);
+const { ws, currentRoom, rooms } = storeToRefs(mainStore);
 
 let intervalID = 0;
 
@@ -32,9 +32,23 @@ function setRooms(tempRooms) {
   }
 }
 
+function getDuration(room) {
+    let duration = 0
+    if(room.playlist.length !== 0) room.playlist[room.index].duration
+    return duration
+}
+
+function getPath(room) {
+    let path = ''
+    if(room.playlist.length !== 0) {
+        path = room.playlist[room.index].path
+    }
+    return path
+}
+
 function onClick(room) {
-  roomName.value = room;
-  clearInterval(intervalID);
+    currentRoom.value = room
+    clearInterval(intervalID)
 }
 
 function formatTime(sec) {
@@ -46,11 +60,13 @@ function formatTime(sec) {
 }
 
 function formatPath(path) {
-  let fileName = path
-    .replace(/\.[^/.]+$/, "")
-    .split("/")
-    .pop();
-  return fileName;
+    if(path !== '') {
+        let fileName = path
+        .replace(/\.[^/.]+$/, "")
+        .split('/')
+        .pop()
+        return fileName
+    }
 }
 
 onMounted(() => {
@@ -68,50 +84,48 @@ onUpdated(()=> {
     <div class="cinema-wrapper">
       <h1>Cinema's</h1>
       <div class="cinema-container">
-        <div class="cinema-card">
+      <template v-for="room in rooms">
+        <li class="cinema-card" @click="onClick(room)" v-if="room.type === 'cinema'">
           <div class="relative-cinema">
             <div class="darken"></div>
             <div class="cinema-info">
               <div>
-                <h2>Cinema title</h2>
+                <h2>{{ room.name }}</h2>
               </div>
               <div class="dot-indicator">
                 <div style="display: flex; align-items: center">
                   <div
                     class="dot not-initialized"
                   ></div>
-                  <p class="room-participants">0<i data-feather="user"></i></p>
+                  <p class="room-participants">{{ room.clients }}<i data-feather="user"></i></p>
                 </div>
                 <p class="room-time">
-                  00:00:00/00:00:00
+                  {{ formatTime(room.time) }}
+                  /{{ formatTime(room.duration) }}
                 </p>
               </div>
             </div>
             <div class="room-image">
-            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" />
+            <img :src="room.playlist[room.index].thumbnail"/>
             </div>
           </div>
-        </div>
+        </li>
+      </template>
       </div>
     </div>
     <div class="rooms-wrapper">
       <h1>Channels</h1>
-      <div class="rooms-container">
-        <div
+      <template class="rooms-container" v-for="room in rooms">
+        <li
           class="room-card"
           @click="onClick(room.name)"
-          v-for="room in rooms"
-          :key="room.name"
+          v-if="room.type === 'channel'"
         >
           <div class="relative">
             <div class="darken"></div>
             <div class="room-info">
               <div>
                 <h2>{{ room.name }}</h2>
-                <!-- <p class="room-path ellipsis">
-                  Playing:
-                  {{ formatPath(room.playlist[room.index].path) }}
-                </p> -->
               </div>
               <div class="dot-indicator">
                 <div style="display: flex; align-items: center">
@@ -123,7 +137,7 @@ onUpdated(()=> {
                       'not-live': !room.play,
                     }"
                   ></div>
-                  <p class="room-participants">0<i data-feather="user"></i></p>
+                  <p class="room-participants">{{ room.clients }}<i data-feather="user"></i></p>
                 </div>
                 <p class="room-time">
                   {{ formatTime(room.time) }}/{{
@@ -133,12 +147,11 @@ onUpdated(()=> {
               </div>
             </div>
             <div class="room-image">
-            <img :src="room.playlist[room.index].thumbnail" />
+            <img :src="room.thumbnail" />
           </div>
           </div>
-          
-        </div>
-      </div>
+        </li>
+      </template>
     </div>
   </div>
 </template>
@@ -290,6 +303,10 @@ onUpdated(()=> {
   /* Required for text-overflow to do anything */
   white-space: nowrap;
   overflow: hidden;
+}
+
+li {
+  list-style: none;
 }
 
 /*Scrollbar*/

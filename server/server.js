@@ -1,7 +1,7 @@
 const api = require('./api/api-service.js')
 const { Method, Type, Scope } = require('./api/api-consts')
 const data = require('./src/rooms.json')
-const  { Room } = require('./room.js')
+const { Room } = require('./room.js')
 const { getVideoDurationInSeconds } = require('get-video-duration')
 const WebSocketServer = require('websocket').server
 const http = require('http')
@@ -24,7 +24,8 @@ function preloadRooms() {
     data.forEach(entry => {
         let room = new Room(entry.name)
         room.index = entry.index
-        room.thumbnail = entry.thumbnail
+        room.type = entry.type
+        if(room.type === 'cinema') room.thumbnail = entry.thumbnail
         room.playlist = entry.playlist
         room.playlist.forEach((video, index) => {
             getVideoDurationInSeconds(video.path).then((duration) => {
@@ -39,23 +40,26 @@ function preloadRooms() {
     })
 }
 
+// TODO: needs refactoring
 function updateIndex() {
     rooms.forEach(room => {
-        if(getTime(room) > room.playlist[room.index].duration) {
-            if(room.loop === false) {
-                if(room.index === (room.playlist.length - 1)) {
-                    room.index = 0
-                    room.path = room.playlist[0].path
-                    room.duration = room.playlist[0].duration
-                } else {
-                    room.index++
-                    room.path = room.playlist[room.index].path
-                    room.duration = room.playlist[room.index].duration
+        if(room.playlist.length !== 0) {
+            if(getTime(room) > room.playlist[room.index].duration) {
+                if(room.loop === false) {
+                    if(room.index === (room.playlist.length - 1)) {
+                        room.index = 0
+                        room.path = room.playlist[0].path
+                        room.duration = room.playlist[0].duration
+                    } else {
+                        room.index++
+                        room.path = room.playlist[room.index].path
+                        room.duration = room.playlist[room.index].duration
+                    }
                 }
+                setTime(room, 0)
+                api.patchStatus(room, room, Scope.LOCAL)
+                api.patchRooms(allClients, rooms, Scope.GLOBAL)
             }
-            setTime(room, 0)
-            api.patchStatus(room, room, Scope.LOCAL)
-            api.patchRooms(allClients, rooms, Scope.GLOBAL)
         }
     })
     clearInterval(intervalID)
@@ -135,14 +139,14 @@ wss.on('request', request => {
                     if(room.initialized === false) room.initialized = true
                     if(room.time === 0) {
                         setTime(room)
-                        api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     }
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     api.patchStatus(client, room, Scope.CLIENT)
                     api.patchChat(room, room, Scope.LOCAL)
                     break
                 case Type.ROOMS:
                     clientsInLobby.add(client)
-                    api.patchRooms(client, rooms, Scope.CLIENT)
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     removeFromOtherRooms(client)
                     rooms.forEach((room) => {
                         api.patchChat(room, room, Scope.LOCAL)
@@ -164,6 +168,10 @@ wss.on('request', request => {
                 case Type.ROOM:
                     if(!checkRoom(msg[1].room)) {
                         room = new Room(msg[1].room)
+                        if(msg[1].thumbnail !== '') {
+                            room.thumbnail = msg[1].thumbnail
+                        }
+                        room.type = 'cinema'
                         console.log(`room created: ${room.name}`)
                         rooms.add(room)
                         api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
@@ -180,7 +188,7 @@ wss.on('request', request => {
                     room = getRoom(msg[1].room)
                     setTime(room, msg[1].time)
                     api.patchStatus(room, room, Scope.LOCAL)
-                    api.patchChat(clientsInLobby, rooms, Scope.GLOBAL)
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     break
             }
         } 
@@ -205,6 +213,13 @@ wss.on('request', request => {
                         room.duration = duration
                         api.patchStatus(room, room, Scope.LOCAL)
                     })
+                    break
+                case Type.INDEX:
+                    room = getRoom(msg[1].room)
+                    room.index = msg[1].index
+                    room.path = room.playlist[room.index].path
+                    room.time = 0
+                    api.patchStatus(room, room, Scope.LOCAL)
                     break
             }
 

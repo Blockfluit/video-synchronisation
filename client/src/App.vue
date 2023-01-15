@@ -7,7 +7,7 @@ import { useMainStore } from "./store/mainStore.js";
 import { onMounted } from "vue";
 
 const mainStore = useMainStore();
-const { roomName } = storeToRefs(mainStore);
+const { currentRoom } = storeToRefs(mainStore);
 
 onMounted(()=> {
   feather.replace()
@@ -16,8 +16,8 @@ onMounted(()=> {
 </script>
 
 <template>
-  <Lobby v-if="roomName === ''" />
-  <VideoPlayer v-if="roomName !== ''" />
+  <Lobby v-if="currentRoom === null" />
+  <VideoPlayer v-else />
 </template>
 
 <style scoped>

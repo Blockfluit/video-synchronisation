@@ -28,12 +28,11 @@ function postPath(websocket, roomName, path) {
     send(websocket, [{"method":Method.POST, "type":Type.PATH}, {"room":roomName, "path":path}])
 }
 
-function postRoom(websocket, roomName) {
-    send(websocket, [{"method":Method.POST, "type":Type.ROOM}, {"room":roomName}])
+function postRoom(websocket, roomName, thumbnail) {
+    send(websocket, [{"method":Method.POST, "type":Type.ROOM}, {"room":roomName, "thumbnail":thumbnail}])
 }
 
 function putChat(websocket, roomName, clientName, message) {
-    console.log(websocket)
     send(websocket, [{"method":Method.PUT, "type":Type.CHAT}, {"room":roomName, "clientName":clientName, "message":message}])
 }
 
@@ -45,6 +44,18 @@ function patchPlay(websocket, roomName) {
     send(websocket, [{"method":Method.PATCH, "type":Type.PLAY}, {"room":roomName}])
 }
 
+function patchIndex(websocket, roomName, index) {
+    send(websocket, [{"method":Method.PATCH, "type":Type.INDEX}, {"room":roomName, "index":index}])
+}
+
+function patchLoop(websocket, roomName) {
+    send(websocket, [{"method":Method.PATCH, "type":Type.LOOP}, {"room":roomName}])
+}
+
+function patchAutoplay(websocket, roomName) {
+    send(websocket, [{"method":Method.PATCH, "type":Type.AUTOPLAY}, {"room":roomName}])
+}
+
 function patchStatus(websocket, roomName) {
     send(websocket, [{"method":Method.PATCH, "type":Type.STATUS}, {"room":roomName}])
 }
@@ -53,4 +64,4 @@ function deleteChat(websocket, roomName) {
     send(websocket, [{"method":Method.DELETE, "type":Type.CHAT}, {"room":roomName}])
 }
 
-export default { ping, getRooms, getStatus, postTime, deleteChat, postPath, postRoom, patchPath, patchPlay, putChat, patchStatus }
+export default { ping, getRooms, getStatus, postTime, postPath, postRoom, patchPath, patchPlay, putChat, patchIndex, patchLoop, patchAutoplay, patchStatus, deleteChat }

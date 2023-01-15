@@ -1,51 +1,97 @@
 [
   {
-    "name": "Testroom #1",
+    "name": "Channel #1",
     "index": 0,
     "loop": true,
+    "type": "channel",
     "playlist": [
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
-        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/Samaritan.jpeg",
-        "path": "https://sensegang.nl/filetransfer/videos/Random/i%27m%20rich%20haha.mp4",
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
         "duration": 0
       }
     ]
   },
   {
-    "name": "Testroom #2",
+    "name": "Channel #1",
     "index": 0,
-    "loop": false,
+    "loop": true,
+    "type": "channel",
     "playlist": [
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/Samaritan.jpeg",
-        "path": "https://api.sensegang.nl/api/stream/633b1beb2314b48c2cda5106/63492fa3d551719c033f93c8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTg4YjNmMWJjNGVkYzgyODcwM2JhMiIsInVzZXJuYW1lIjoibGVhZmFyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjczNzE0MjA0LCJleHAiOjE2NzYzOTI2MDR9.xhoTy7aVfygMe7mKyF-26s48PPhrsvqPHp-RNkpBL24",
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
-        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
         "duration": 0
       }
     ]
   },
   {
-    "name": "Testroom #3",
+    "name": "Channel #1",
     "index": 0,
-    "loop": false,
+    "loop": true,
+    "type": "channel",
     "playlist": [
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/The%20Witcher.jpeg",
-        "path": "https://api.sensegang.nl/api/stream/633b1beb2314b48c2cda5106/63492fa3d551719c033f93c8?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTg4YjNmMWJjNGVkYzgyODcwM2JhMiIsInVzZXJuYW1lIjoibGVhZmFyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjczNzE0MjA0LCJleHAiOjE2NzYzOTI2MDR9.xhoTy7aVfygMe7mKyF-26s48PPhrsvqPHp-RNkpBL24",
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "duration": 0
       },
       {
-        "thumbnail": "https://api.sensegang.nl/thumbnails/South%20Park.jpeg",
-        "path": "https://sensegang.nl/filetransfer/videos/Random/4killround.mp4",
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Cinema #1",
+    "index": 0,
+    "loop": false,
+    "type": "cinema",
+    "thumbnail": "https://www.grandsierraresort.com/hubfs/recreation/Grand-Sierra-Cinema-view-of-auditorium_q085_1920x1080.jpg",
+    "playlist": [
+      {
+        "thumbnail": "https://www.al.com/resizer/uQVPmZZslOXT0e_5eAHQa1rZ9So=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width2048/img/entertainment_impact/photo/20563816-standard.jpg",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Cinema #2",
+    "index": 0,
+    "loop": false,
+    "type": "cinema",
+    "thumbnail": "https://images.adsttc.com/media/images/5f7d/fef2/63c0/170a/9100/0273/large_jpg/Jiangnan_Photography.jpg?1602092773",
+    "playlist": [
+      {
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.al.com/resizer/uQVPmZZslOXT0e_5eAHQa1rZ9So=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width2048/img/entertainment_impact/photo/20563816-standard.jpg",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
         "duration": 0
       }
     ]

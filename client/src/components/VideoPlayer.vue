@@ -9,8 +9,7 @@ import { onMounted, onUpdated, ref } from 'vue';
 import feather from 'feather-icons';
 
 const mainStore = useMainStore()
-const { roomName, ws, isAdmin, video, time, duration, chatbox, clients } = storeToRefs(mainStore)
-const path = ref('')
+const { ws, currentRoom, isAdmin, video, time, chat } = storeToRefs(mainStore)
 
 let latency = 0
 
@@ -19,9 +18,8 @@ ws.value.onmessage = message => {
 
         if(msg[0].method === 'patch' && msg[0].type === 'status') {
             ping()
-            if(path.value !== msg[1].path) video.value.load() //loads video if source has changed
-            path.value = msg[1].path
-            duration.value = msg[1].duration
+            if(currentRoom.value.path !== msg[1].path) video.value.load() //loads video if source has changed
+            currentRoom.value = msg[1]
             video.value.currentTime = msg[1].time
             msg[1].play ? video.value.play() : video.value.pause()
         }
@@ -32,8 +30,7 @@ ws.value.onmessage = message => {
         }
         
         if(msg[0].method === 'patch' && msg[0].type === 'chat') {
-            chatbox.value = msg[1].chat
-            clients.value = msg[1].clients
+            chat.value = msg[1]
         }
 }
 
@@ -55,11 +52,17 @@ function formatPath(path) {
     return fileName
 }
 
+function onClick() {
+    video.value = null
+    currentRoom.value = null
+    api.getRooms(ws.value)
+}
+
 onMounted(() => {
     feather.replace();
-    api.getStatus(ws.value, roomName.value)
+    api.getStatus(ws.value, currentRoom.value.name)
     video.value.onloadeddata = () => {
-        api.getStatus(ws.value, roomName.value)
+        setTimeout(() => api.getStatus(ws.value, currentRoom.value.name), 200)
     }
     video.value.ontimeupdate = () => {
         time.value = video.value.currentTime
@@ -74,21 +77,21 @@ onUpdated(() => {
 
 
 <template>
-    <div @click="roomName = ''" class="back-wrapper">
+    <div @click="onClick()" class="back-wrapper">
         <i data-feather="chevron-left"></i>
-        <h1 style="margin-left: 10px;" >{{ roomName }}</h1>
+        <h1 style="margin-left: 10px;" >{{ currentRoom.name }}</h1>
     </div>
     <div class="horizontal-container">
         <video ref="video" class="video-player">
-            <source :src="path" type="video/mp4">
+            <source :src="currentRoom.path" type="video/mp4">
         </video>
         <Chat />
     </div>
     <div style="margin-left: 50px; margin-top: 5px;">
         <div style="display: flex; justify-content: space-between; width: 70vw;">
             <ClientPanel/>
-            <p>{{ formatTime(time) + '/' + formatTime(duration) }}</p>
-            <p>{{ formatPath(path) }}</p>
+            <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
+            <p>{{ formatPath(currentRoom.path) }}</p>
             
         </div>
         <AdminPanel v-if="isAdmin"/>

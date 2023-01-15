@@ -5,13 +5,13 @@ import api from '../api/api-service'
 import { ref } from 'vue';
 
 const mainStore = useMainStore()
-const { ws, clientName, roomName, chatbox, clients } = storeToRefs(mainStore)
+const { ws, clientName, currentRoom, chat } = storeToRefs(mainStore)
 
 const chatMessage = ref('')
 clientName.value = (Math.random() + 1).toString(36).substring(7)
 
 function sendChat() {
-    api.putChat(ws.value, roomName.value, clientName.value, chatMessage.value)
+    api.putChat(ws.value, currentRoom.value.name, clientName.value, chatMessage.value)
     chatMessage.value = ''
 }
 </script>
@@ -19,13 +19,13 @@ function sendChat() {
 <template>
      <div class="chat-container">
         <ul>
-            <template v-for="message in chatbox">
+            <template v-for="message in chat.chat">
                 <li v-if="message.clientName !== clientName">{{ message.clientName + ': ' + message.message }}</li>
                 <li class="right" v-else>{{ message.message }}</li>
             </template>
         </ul>
         <div class="horizontal-container">
-            <p> {{ clients }} <i data-feather="user"></i></p>
+            <p> {{ chat.clients }} <i data-feather="user"></i></p>
             <input @keyup.enter="sendChat()" v-model="chatMessage" type="text" placeholder="Type a message...">
             <button @click="sendChat()"><i data-feather="send"></i></button>
         </div>

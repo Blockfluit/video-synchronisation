@@ -7,11 +7,11 @@ import feather from 'feather-icons';
 import { onMounted, onUpdated } from 'vue';
 
 const mainStore = useMainStore()
-const { video, ws, roomName } = storeToRefs(mainStore)
+const { video, ws, currentRoom } = storeToRefs(mainStore)
 const volume = ref(100)
 
 function sync() {
-    api.getStatus(ws.value, roomName.value)
+    api.getStatus(ws.value, currentRoom.value.name)
 }
 onMounted(() => {
     feather.replace()
