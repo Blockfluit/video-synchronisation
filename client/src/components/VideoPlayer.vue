@@ -54,6 +54,11 @@ function formatPath(path) {
     return fileName
 }
 
+function onClick() {
+    roomName.value = ''
+    api.getRooms(ws.value)
+}
+
 onMounted(() => {
     api.getStatus(ws.value, roomName.value)
     video.value.onloadeddata = () => {
@@ -68,7 +73,7 @@ onMounted(() => {
 
 
 <template>
-    <h1 @click="roomName = ''">{{ roomName }}</h1>
+    <h1 @click="onClick()">{{ roomName }}</h1>
     <div class="horizontal-container">
         <video ref="video" width="960" height="540">
             <source :src="path" type="video/mp4">

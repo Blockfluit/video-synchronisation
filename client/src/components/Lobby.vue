@@ -6,7 +6,7 @@ import { onMounted } from 'vue';
 
 
 const mainStore = useMainStore()
-const { ws, roomName, rooms } = storeToRefs(mainStore)
+const { ws, roomName, rooms, clients } = storeToRefs(mainStore)
 
 let intervalID = 0
 

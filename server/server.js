@@ -135,14 +135,14 @@ wss.on('request', request => {
                     if(room.initialized === false) room.initialized = true
                     if(room.time === 0) {
                         setTime(room)
-                        api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     }
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     api.patchStatus(client, room, Scope.CLIENT)
                     api.patchChat(room, room, Scope.LOCAL)
                     break
                 case Type.ROOMS:
                     clientsInLobby.add(client)
-                    api.patchRooms(client, rooms, Scope.CLIENT)
+                    api.patchRooms(clientsInLobby, rooms, Scope.GLOBAL)
                     removeFromOtherRooms(client)
                     rooms.forEach((room) => {
                         api.patchChat(room, room, Scope.LOCAL)
