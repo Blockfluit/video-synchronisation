@@ -53,9 +53,9 @@ function formatTime(sec) {
 
 <style scoped>
 .panel-container {
-    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
     border-radius: 8px;
     margin-top: 10px;
+    margin-right: 50px;
     padding: 5px;
 }
 
