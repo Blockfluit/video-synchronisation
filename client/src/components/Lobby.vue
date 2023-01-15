@@ -6,7 +6,7 @@ import { onMounted } from 'vue';
 
 
 const mainStore = useMainStore()
-const { ws, roomName, rooms, clients } = storeToRefs(mainStore)
+const { ws, currentRoom, rooms } = storeToRefs(mainStore)
 
 let intervalID = 0
 
@@ -32,8 +32,22 @@ function setRooms(tempRooms) {
         }
     }
 
+function getDuration(room) {
+    let duration = 0
+    if(room.playlist.length !== 0) room.playlist[room.index].duration
+    return duration
+}
+
+function getPath(room) {
+    let path = ''
+    if(room.playlist.length !== 0) {
+        path = room.playlist[room.index].path
+    }
+    return path
+}
+
 function onClick(room) {
-    roomName.value = room
+    currentRoom.value = room
     clearInterval(intervalID)
 }
 
@@ -46,8 +60,10 @@ function formatTime(sec) {
 }
 
 function formatPath(path) {
-    let fileName = path.replace(/\.[^/.]+$/, "").split('/').pop()
-    return fileName
+    if(path !== '') {
+        let fileName = path.replace(/\.[^/.]+$/, "").split('/').pop()
+        return fileName
+    }
 }
 
 onMounted(() => {
@@ -58,20 +74,38 @@ onMounted(() => {
 <template>
     <div class="rooms-container">
         <h1>Rooms</h1>
-        <div class="card-container" @click="onClick(room.name)" v-for="room in rooms">
-            <dl>
-                <dt>Room name:</dt>
-                <dd>{{ room.name }}</dd>
-                <dt>Currently playing:</dt>
-                <dd>{{ formatPath(room.playlist[room.index].path) }}</dd>
-                <dt>Time:</dt>
-                <dd>{{ formatTime(room.time) }}</dd>
-                <dt>Duration:</dt>
-                <dd>{{ formatTime(room.playlist[room.index].duration) }}</dd>
-                <dt :class="{'live': room.play && room.initialized, 'not-initialized': room.play && !room.initialized,'not-live': !room.play}">•</dt>
-            </dl>
-            <img :src="room.playlist[room.index].thumbnail">
-        </div>
+        <template v-for="room in rooms">
+            <li class="card-container" @click="onClick(room)" v-if="room.type === 'channel'">
+                <dl>
+                    <dt>Room name:</dt>
+                    <dd>{{ room.name }}</dd>
+                    <dt>Currently playing:</dt>
+                    <dd>{{ formatPath(room.playlist[room.index].path) }}</dd>
+                    <dt>Time:</dt>
+                    <dd>{{ formatTime(room.time) }}</dd>
+                    <dt>Duration:</dt>
+                    <dd>{{ formatTime(room.playlist[room.index].duration) }}</dd>
+                    <dt :class="{'live': room.play && room.initialized, 'not-initialized': room.play && !room.initialized,'not-live': !room.play}">•</dt>
+                </dl>
+                <img :src="room.playlist[room.index].thumbnail">
+            </li>
+        </template>
+        <template v-for="room in rooms">
+            <li class="card-container" @click="onClick(room)" v-if="room.type === 'cinema'">
+                <dl>
+                    <dt>Room name:</dt>
+                    <dd>{{ room.name }}</dd>
+                    <dt>Currently playing:</dt>
+                    <dd>{{ formatPath(room.path) }}</dd>
+                    <dt>Time:</dt>
+                    <dd>{{ formatTime(room.time) }}</dd>
+                    <dt>Duration:</dt>
+                    <dd>{{ formatTime(room.duration) }}</dd>
+                    <dt :class="{'live': room.play && room.initialized, 'not-initialized': room.play && !room.initialized,'not-live': !room.play}">•</dt>
+                </dl>
+                <img :src="room.thumbnail">
+            </li>
+        </template>
     </div>
 </template>
 

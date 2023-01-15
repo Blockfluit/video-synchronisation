@@ -16,7 +16,10 @@ const Type = {
     CHAT: 'chat',
     PLAY: 'play',
     TIME: 'time',
-    PATH: 'path'
+    PATH: 'path',
+    AUTOPLAY: 'autoplay',
+    LOOP: 'loop',
+    INDEX: 'index'
     
 }
 
