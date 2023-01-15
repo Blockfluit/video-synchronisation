@@ -25,7 +25,7 @@ function preloadRooms() {
         let room = new Room(entry.name)
         room.index = entry.index
         room.type = entry.type
-        if(room.type === 'cinema') room.thumbnail = entry.thumbnail
+        if(room.type === 'channel') room.thumbnail = entry.thumbnail
         room.playlist = entry.playlist
         room.playlist.forEach((video, index) => {
             getVideoDurationInSeconds(video.path).then((duration) => {

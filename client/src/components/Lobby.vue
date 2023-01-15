@@ -118,7 +118,7 @@ onUpdated(()=> {
       <template class="rooms-container" v-for="room in rooms">
         <li
           class="room-card"
-          @click="onClick(room.name)"
+          @click="onClick(room)"
           v-if="room.type === 'channel'"
         >
           <div class="relative">
