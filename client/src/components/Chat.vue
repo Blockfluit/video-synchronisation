@@ -26,7 +26,7 @@ function sendChat() {
         </ul>
         <div class="horizontal-container">
             <p> {{ clients }} <i data-feather="user"></i></p>
-            <input @keyup.enter="sendChat()" v-model="chatMessage" type="text" placeholder="Type a message">
+            <input @keyup.enter="sendChat()" v-model="chatMessage" type="text" placeholder="Type a message...">
             <button @click="sendChat()"><i data-feather="send"></i></button>
         </div>
     </div>
@@ -45,6 +45,7 @@ function sendChat() {
 input {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 60%;
     height: 20px;
     font-size: 10px;

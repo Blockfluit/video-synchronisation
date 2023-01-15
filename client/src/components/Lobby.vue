@@ -181,7 +181,8 @@ onUpdated(()=> {
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 10px 10px;
-  height: 80vh;
+  height: 81vh;
+  border-radius: 8px;
 }
 .room-participants {
   display: flex;
@@ -190,8 +191,8 @@ onUpdated(()=> {
 .relative {
   position: relative;
   border-radius: 8px;
-  height: 433px;
-  width: 300px;
+  height: 533px;
+  width: 400px;
 }
 .relative-cinema {
   position: relative;
