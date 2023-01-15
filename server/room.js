@@ -4,6 +4,7 @@ class Room {
         this.play = true
         this.initialized = false
         this.loop = false
+        this.type = ''
         this.time = 0
         this.index = 0
         this.path = ''

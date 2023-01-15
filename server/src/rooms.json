@@ -3,6 +3,7 @@
     "name": "Testroom #1",
     "index": 0,
     "loop": true,
+    "type": "channel",
     "playlist": [
       {
         "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
@@ -20,6 +21,7 @@
     "name": "Testroom #2",
     "index": 0,
     "loop": false,
+    "type": "cinema",
     "playlist": [
       {
         "thumbnail": "https://www.al.com/resizer/uQVPmZZslOXT0e_5eAHQa1rZ9So=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width2048/img/entertainment_impact/photo/20563816-standard.jpg",
