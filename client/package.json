@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "feather-icons": "^4.29.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45"
   },

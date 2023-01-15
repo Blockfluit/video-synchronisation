@@ -18,6 +18,42 @@
     ]
   },
   {
+    "name": "Channel #1",
+    "index": 0,
+    "loop": true,
+    "type": "channel",
+    "playlist": [
+      {
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Channel #1",
+    "index": 0,
+    "loop": true,
+    "type": "channel",
+    "playlist": [
+      {
+        "thumbnail": "https://creativereview.imgix.net/content/uploads/2019/12/joker_full.jpg?auto=compress,format&q=60&w=1012&h=1500",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://bst.icons8.com/wp-content/themes/icons8/app/uploads/2019/05/poster-for-movie.png",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
     "name": "Cinema #1",
     "index": 0,
     "loop": false,

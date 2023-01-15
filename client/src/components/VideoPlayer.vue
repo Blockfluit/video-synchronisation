@@ -5,7 +5,8 @@ import AdminPanel from './AdminPanel.vue';
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../store/mainStore'
 import api from '../api/api-service'
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref } from 'vue';
+import feather from 'feather-icons';
 
 const mainStore = useMainStore()
 const { ws, currentRoom, isAdmin, video, time, chat } = storeToRefs(mainStore)
@@ -58,42 +59,70 @@ function onClick() {
 }
 
 onMounted(() => {
+    feather.replace();
+    api.getStatus(ws.value, currentRoom.value.name)
     video.value.onloadeddata = () => {
         setTimeout(() => api.getStatus(ws.value, currentRoom.value.name), 200)
     }
     video.value.ontimeupdate = () => {
         time.value = video.value.currentTime
     }
-}) 
+})
+
+onUpdated(() => {
+    feather.replace();
+})
 </script>
 
 
 
 <template>
-    <h1 @click="onClick()">{{ currentRoom.name }}</h1>
+    <div @click="onClick()" class="back-wrapper">
+        <i data-feather="chevron-left"></i>
+        <h1 style="margin-left: 10px;" >{{ currentRoom.name }}</h1>
+    </div>
     <div class="horizontal-container">
-        <video ref="video" width="960" height="540">
+        <video ref="video" class="video-player">
             <source :src="currentRoom.path" type="video/mp4">
         </video>
-        <Chat/>
+        <Chat />
     </div>
-    <p>{{ formatPath(currentRoom.path) }}</p>
-    <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
-    <ClientPanel />
-    <AdminPanel v-if="isAdmin"/>
+    <div style="margin-left: 50px; margin-top: 5px;">
+        <div style="display: flex; justify-content: space-between; width: 70vw;">
+            <ClientPanel/>
+            <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
+            <p>{{ formatPath(currentRoom.path) }}</p>
+            
+        </div>
+        <AdminPanel v-if="isAdmin"/>
+    </div>
 </template>
 
 
 
 <style scoped>
+.back-wrapper {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    margin: 20px 0px 0px 20px; 
+    cursor: pointer;
+}
+
 video::-webkit-media-controls-enclosure {
   display:none !important;
 }
 .horizontal-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    margin-top: 20px;
     width: 100%;
+}
+.video-player {
+    width: 70vw;
+    max-height: 70vh;
+    margin-left: 50px;
 }
 
 video {

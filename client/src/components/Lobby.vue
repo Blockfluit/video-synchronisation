@@ -1,36 +1,36 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '../store/mainStore'
-import api from '../api/api-service'
-import { onMounted } from 'vue';
+import { storeToRefs } from "pinia";
+import { useMainStore } from "../store/mainStore";
+import feather from "feather-icons";
+import api from "../api/api-service";
+import { onMounted, onUpdated } from "vue";
 
+const mainStore = useMainStore();
+const { ws, currentRoom, rooms } = storeToRefs(mainStore);
 
-const mainStore = useMainStore()
-const { ws, currentRoom, rooms } = storeToRefs(mainStore)
+let intervalID = 0;
 
-let intervalID = 0
+ws.value.onmessage = (message) => {
+  let msg = JSON.parse(message.data);
 
-ws.value.onmessage = message => {
-        let msg = JSON.parse(message.data)
-
-        if(msg[0].method === 'patch' && msg[0].type === 'rooms') {
-            setRooms(msg[1])
-        }
-}
+  if (msg[0].method === "patch" && msg[0].type === "rooms") {
+    setRooms(msg[1]);
+  }
+};
 
 function setRooms(tempRooms) {
-        if(tempRooms === undefined) {
-            const map = rooms.value.map(room => {
-                if(room.time !== 0 && room.play === true) room.time++
-                return room
-            })
-            rooms.value = map
-        } else {
-            rooms.value = tempRooms
-            clearInterval(intervalID)
-            intervalID = setInterval(() => setRooms(), 1000)
-        }
-    }
+  if (tempRooms === undefined) {
+    const map = rooms.value.map((room) => {
+      if (room.time !== 0 && room.play === true) room.time++;
+      return room;
+    });
+    rooms.value = map;
+  } else {
+    rooms.value = tempRooms;
+    clearInterval(intervalID);
+    intervalID = setInterval(() => setRooms(), 1000);
+  }
+}
 
 function getDuration(room) {
     let duration = 0
@@ -52,125 +52,283 @@ function onClick(room) {
 }
 
 function formatTime(sec) {
-    if(!isNaN(sec)) {
-        let data = new Date(parseInt(sec) * 1000).toISOString().substr(11, 8)
-        return data
-    }
-    return '00:00:00'
+  if (!isNaN(sec)) {
+    let data = new Date(parseInt(sec) * 1000).toISOString().substr(11, 8);
+    return data;
+  }
+  return "00:00:00";
 }
 
 function formatPath(path) {
     if(path !== '') {
-        let fileName = path.replace(/\.[^/.]+$/, "").split('/').pop()
+        let fileName = path
+        .replace(/\.[^/.]+$/, "")
+        .split('/')
+        .pop()
         return fileName
     }
 }
 
 onMounted(() => {
-    api.getRooms(ws.value)
+  api.getRooms(ws.value);
+  feather.replace();
+});
+
+onUpdated(()=> {
+  feather.replace();
 })
 </script>
 
 <template>
-    <div class="rooms-container">
-        <h1>Rooms</h1>
-        <template v-for="room in rooms">
-            <li class="card-container" @click="onClick(room)" v-if="room.type === 'channel'">
-                <dl>
-                    <dt>Room name:</dt>
-                    <dd>{{ room.name }}</dd>
-                    <dt>Currently playing:</dt>
-                    <dd>{{ formatPath(room.playlist[room.index].path) }}</dd>
-                    <dt>Time:</dt>
-                    <dd>{{ formatTime(room.time) }}</dd>
-                    <dt>Duration:</dt>
-                    <dd>{{ formatTime(room.playlist[room.index].duration) }}</dd>
-                    <dt :class="{'live': room.play && room.initialized, 'not-initialized': room.play && !room.initialized,'not-live': !room.play}">•</dt>
-                </dl>
-                <img :src="room.playlist[room.index].thumbnail">
-            </li>
-        </template>
-        <template v-for="room in rooms">
-            <li class="card-container" @click="onClick(room)" v-if="room.type === 'cinema'">
-                <dl>
-                    <dt>Room name:</dt>
-                    <dd>{{ room.name }}</dd>
-                    <dt>Currently playing:</dt>
-                    <dd>{{ formatPath(room.path) }}</dd>
-                    <dt>Time:</dt>
-                    <dd>{{ formatTime(room.time) }}</dd>
-                    <dt>Duration:</dt>
-                    <dd>{{ formatTime(room.duration) }}</dd>
-                    <dt :class="{'live': room.play && room.initialized, 'not-initialized': room.play && !room.initialized,'not-live': !room.play}">•</dt>
-                </dl>
-                <img :src="room.thumbnail">
-            </li>
-        </template>
+  <div class="container">
+    <div class="cinema-wrapper">
+      <h1>Cinema's</h1>
+      <div class="cinema-container">
+      <template v-for="room in rooms">
+        <li class="cinema-card" @click="onClick(room)" v-if="room.type === 'cinema'">
+          <div class="relative-cinema">
+            <div class="darken"></div>
+            <div class="cinema-info">
+              <div>
+                <h2>{{ room.name }}</h2>
+              </div>
+              <div class="dot-indicator">
+                <div style="display: flex; align-items: center">
+                  <div
+                    class="dot not-initialized"
+                  ></div>
+                  <p class="room-participants">{{ room.clients }}<i data-feather="user"></i></p>
+                </div>
+                <p class="room-time">
+                  {{ formatTime(room.time) }}
+                  /{{ formatTime(room.duration) }}
+                </p>
+              </div>
+            </div>
+            <div class="room-image">
+            <img :src="room.playlist[room.index].thumbnail"/>
+            </div>
+          </div>
+        </li>
+      </template>
+      </div>
     </div>
+    <div class="rooms-wrapper">
+      <h1>Channels</h1>
+      <template class="rooms-container" v-for="room in rooms">
+        <li
+          class="room-card"
+          @click="onClick(room.name)"
+          v-if="room.type === 'channel'"
+        >
+          <div class="relative">
+            <div class="darken"></div>
+            <div class="room-info">
+              <div>
+                <h2>{{ room.name }}</h2>
+              </div>
+              <div class="dot-indicator">
+                <div style="display: flex; align-items: center">
+                  <div
+                    class="dot"
+                    :class="{
+                      live: room.play && room.initialized,
+                      'not-initialized': room.play && !room.initialized,
+                      'not-live': !room.play,
+                    }"
+                  ></div>
+                  <p class="room-participants">{{ room.clients }}<i data-feather="user"></i></p>
+                </div>
+                <p class="room-time">
+                  {{ formatTime(room.time) }}/{{
+                    formatTime(room.playlist[room.index].duration)
+                  }}
+                </p>
+              </div>
+            </div>
+            <div class="room-image">
+            <img :src="room.thumbnail" />
+          </div>
+          </div>
+        </li>
+      </template>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 50px 0px 50px;
+}
+
+.container h1 {
+  margin-top: 5vh;
+}
+.cinema-card {
+  width: 70vw;
+  height: 80vh;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+.darken{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  border-radius: 8px;
+  top: 0;
+  left: 0;
+}
+
+.darken:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.rooms-wrapper h1 {
+  padding-left: 10px;
+}
 .rooms-container {
-    display: flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content: space-between;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px 10px;
+  height: 81vh;
+  border-radius: 8px;
+}
+.room-participants {
+  display: flex;
+  align-items: center;
+}
+.relative {
+  position: relative;
+  border-radius: 8px;
+  height: 533px;
+  width: 400px;
+}
+.relative-cinema {
+  position: relative;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+}
+.room-participants svg {
+  height: 14px;
+  stroke-width: 2;
+}
+.cinema-container {
+  padding: 10px 0px;
+}
+.dot-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
-.card-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
-    max-height: 220px;
-    min-width: 350px;
-    border-radius: 8px;
+.dot-indicator p {
+  margin: 0;
+  font-size: 12px;
 }
-
-img {
-    object-fit: cover;
-    height: auto;
-    width: 147px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+.room-card {
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  transition:all 0.5s ease;
 }
-
-dl {
-    margin: 10px 10px 10px 10px;
-    color: #a39b8f;
-    text-align: center;
+.room-card:hover {
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6) !important;
 }
-
-dt {
-    font-weight: bold;
-    color: #ccc8c1;
-    margin: 3px;
+.room-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 20px 10px 20px;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
-
-dd {
-    margin-left: 20px;
+.cinema-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 20px 10px 20px;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
-
+.room-info h2 {
+  font-weight: bold;
+  margin: 0;
+}
+.room-image {
+  width: 100%;
+  height: 100%;
+}
+.room-image img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+}
 .live {
   animation: blinker 2s linear infinite;
-  color: green;
+  background-color: green;
+  font-size: xx-large;
+  text-align: left;
+}
+.dot {
+  height: 7px;
+  width: 7px;
+  border-radius: 25px;
+  margin-right: 8px;
+}
+.not-initialized {
+  background-color: orange;
   font-size: xx-large;
   text-align: left;
 }
 
-.not-initialized {
-    color: orange;
-    font-size: xx-large;
-    text-align: left;
-}
-
 .not-live {
-    color: red;
-    font-size: xx-large;
-    text-align: left;
+  background-color: red;
+}
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+li {
+  list-style: none;
+}
+
+/*Scrollbar*/
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
 @keyframes blinker {
   50% {
     opacity: 0;
