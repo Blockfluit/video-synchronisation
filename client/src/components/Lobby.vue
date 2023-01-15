@@ -82,9 +82,9 @@ onUpdated(()=> {
 <template>
   <div class="container">
     <div class="cinema-wrapper">
-      <h1>Cinema's</h1>
+      <h1 style="margin-left: 10px;">Cinema's</h1>
       <div class="cinema-container">
-      <template v-for="room in rooms">
+      <template class="scroll" v-for="room in rooms">
         <li class="cinema-card" @click="onClick(room)" v-if="room.type === 'cinema'">
           <div class="relative-cinema">
             <div class="darken"></div>
@@ -95,7 +95,12 @@ onUpdated(()=> {
               <div class="dot-indicator">
                 <div style="display: flex; align-items: center">
                   <div
-                    class="dot not-initialized"
+                    class="dot"
+                    :class="{
+                      live: room.play && room.initialized,
+                      'not-initialized': room.play && !room.initialized,
+                      'not-live': !room.play,
+                    }"
                   ></div>
                   <p class="room-participants">{{ room.clients }}<i data-feather="user"></i></p>
                 </div>
@@ -115,7 +120,8 @@ onUpdated(()=> {
     </div>
     <div class="rooms-wrapper">
       <h1>Channels</h1>
-      <template class="rooms-container" v-for="room in rooms">
+      <div class="rooms-container">
+      <template v-for="room in rooms">
         <li
           class="room-card"
           @click="onClick(room)"
@@ -152,6 +158,7 @@ onUpdated(()=> {
           </div>
         </li>
       </template>
+      </div>
     </div>
   </div>
 </template>
@@ -159,6 +166,7 @@ onUpdated(()=> {
 <style scoped>
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding: 0px 50px 0px 50px;
 }
@@ -167,11 +175,29 @@ onUpdated(()=> {
   margin-top: 5vh;
 }
 .cinema-card {
-  width: 70vw;
-  height: 80vh;
+  width: 40vw;
+  height: 40vh;
+  min-width: 550px;
+  max-width: 550px;
+  height: 100%;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
+  margin-bottom: 30px;
+  margin: 0px 10px;
+}
+.cinema-card:hover {
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.cinema-container {
+  display: flex;
+  padding: 10px 0px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 41vh;
+}
+.cinema-wrapper {
+  height: 50vh;
 }
 .darken{
   width: 100%;
@@ -191,11 +217,16 @@ onUpdated(()=> {
   padding-left: 10px;
 }
 .rooms-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
   padding: 10px 10px;
-  height: 81vh;
+  height: 30vh;
   border-radius: 8px;
+}
+.rooms-wrapper{
+  height: 50vh;
 }
 .room-participants {
   display: flex;
@@ -204,8 +235,8 @@ onUpdated(()=> {
 .relative {
   position: relative;
   border-radius: 8px;
-  height: 533px;
-  width: 400px;
+  height: 100%;
+  width: 100%;
 }
 .relative-cinema {
   position: relative;
@@ -217,9 +248,7 @@ onUpdated(()=> {
   height: 14px;
   stroke-width: 2;
 }
-.cinema-container {
-  padding: 10px 0px;
-}
+
 .dot-indicator {
   display: flex;
   align-items: center;
@@ -232,15 +261,16 @@ onUpdated(()=> {
   font-size: 12px;
 }
 .room-card {
-  margin-bottom: 30px;
+  margin-right: 20px;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
   border-radius: 8px;
+  min-width: 350px;
+  max-width: 350px;
   cursor: pointer;
   position: relative;
-  transition:all 0.5s ease;
 }
 .room-card:hover {
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6);
 }
 .room-info {
   display: flex;
@@ -312,7 +342,8 @@ li {
 /*Scrollbar*/
 /* width */
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 2px;
+  height: 2px;
 }
 
 /* Track */

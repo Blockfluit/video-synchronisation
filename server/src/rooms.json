@@ -4,7 +4,7 @@
     "index": 0,
     "loop": true,
     "type": "channel",
-    "thumbnail": "https://assets1.ignimgs.com/2015/11/10/south-park-ob1jpg-a808ca.jpg",
+    "thumbnail": "https://media.s-bol.com/NN47LJn1M5p/550x364.jpg",
     "playlist": [
       {
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -21,7 +21,24 @@
     "index": 0,
     "loop": true,
     "type": "channel",
-    "thumbnail": "https://marketplace.canva.com/EAFH3gODxw4/1/0/1131w/canva-black-%26-white-modern-mystery-forest-movie-poster-rLty9dwhGG4.jpg",
+    "thumbnail": "https://m.media-amazon.com/images/M/MV5BZjRjOTFkOTktZWUzMi00YzMyLThkMmYtMjEwNmQyNzliYTNmXkEyXkFqcGdeQXVyNzQ1ODk3MTQ@._V1_.jpg",
+    "playlist": [
+      {
+       "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "duration": 0
+      },
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Channel #3",
+    "index": 0,
+    "loop": true,
+    "type": "channel",
+    "thumbnail": "https://lumiere-a.akamaihd.net/v1/images/og-generic_02031d2b.png?region=0%2C0%2C1200%2C1200",
     "playlist": [
       {
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -34,11 +51,28 @@
     ]
   },
   {
-    "name": "Channel #3",
-    "index": 1,
+    "name": "Channel #4",
+    "index": 0,
     "loop": true,
     "type": "channel",
-    "thumbnail": "https://images.adsttc.com/media/images/5f7d/fef2/63c0/170a/9100/0273/large_jpg/Jiangnan_Photography.jpg?1602092773",
+    "thumbnail": "https://images-na.ssl-images-amazon.com/images/S/pv-target-images/068b3b827a29e7e4508faea51d78d4a72dd87258f34680c4d990ec1e3ca2e6fb._RI_V_TTW_.jpg",
+    "playlist": [
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "duration": 0
+      },
+      {
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Channel #5",
+    "index": 0,
+    "loop": true,
+    "type": "channel",
+    "thumbnail": "https://www.grandsierraresort.com/hubfs/recreation/Grand-Sierra-Cinema-view-of-auditorium_q085_1920x1080.jpg",
     "playlist": [
       {
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -75,7 +109,48 @@
     "type": "cinema",
     "playlist": [
       {
-        "thumbnail": "https://images.squarespace-cdn.com/content/v1/5acd17597c93273e08da4786/1547847934765-ZOU5KGSHYT6UVL6O5E5J/Shrek+Poster.png",
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.al.com/resizer/uQVPmZZslOXT0e_5eAHQa1rZ9So=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.al.com/home/bama-media/width2048/img/entertainment_impact/photo/20563816-standard.jpg",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Cinema #3",
+    "index": 0,
+    "loop": false,
+    "type": "cinema",
+    "playlist": [
+      {
+        "thumbnail": "https://hbomax-images.warnermediacdn.com/images/GVU2bpwOunINJjhsJATsb/tileburnedin?size=1280x720&partner=hbomaxcom&v=325f2bc36eccefbafde5fe74b5993ace&host=art-gallery.api.hbo.com&language=nl-nl&w=1280",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "duration": 0
+      },
+      {
+        "thumbnail": "https://www.moviemeter.nl/images/cover/1147000/1147202.jpg?cb=1663950948",
+        "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "name": "Cinema #4",
+    "index": 0,
+    "loop": false,
+    "type": "cinema",
+    "playlist": [
+      {
+        "thumbnail": "https://images.pathe-thuis.nl/19363_1920x1080.jpg",
         "path": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
         "duration": 0
       },
