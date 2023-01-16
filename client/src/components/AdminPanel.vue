@@ -69,7 +69,7 @@ onUpdated(()=> {
             <input @keyup.enter="setPath(path)" v-model="path" type="text" placeholder="Path">
         </div>
         <p>{{ formatTime(time) }}</p>
-        <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="duration">
+        <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
     </div>
 </template>
 

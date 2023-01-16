@@ -186,7 +186,7 @@ onUpdated(()=> {
   margin: 0px 10px;
 }
 .cinema-card:hover {
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 .cinema-container {
@@ -270,7 +270,7 @@ onUpdated(()=> {
   position: relative;
 }
 .room-card:hover {
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.1);
 }
 .room-info {
   display: flex;
