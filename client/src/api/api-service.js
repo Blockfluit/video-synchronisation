@@ -48,12 +48,12 @@ function patchIndex(websocket, roomName, index) {
     send(websocket, [{"method":Method.PATCH, "type":Type.INDEX}, {"room":roomName, "index":index}])
 }
 
-function patchLoop(websocket, roomName) {
-    send(websocket, [{"method":Method.PATCH, "type":Type.LOOP}, {"room":roomName}])
+function patchAutoplay(websocket, roomName, autoplay) {
+    send(websocket, [{"method":Method.PATCH, "type":Type.AUTOPLAY}, {"room":roomName, "autoplay":autoplay}])
 }
 
-function patchAutoplay(websocket, roomName) {
-    send(websocket, [{"method":Method.PATCH, "type":Type.AUTOPLAY}, {"room":roomName}])
+function patchLoop(websocket, roomName, loop) {
+    send(websocket, [{"method":Method.PATCH, "type":Type.LOOP}, {"room":roomName, "loop":loop}])
 }
 
 function patchStatus(websocket, roomName) {

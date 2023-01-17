@@ -43,23 +43,24 @@ function preloadRooms() {
 // TODO: needs refactoring
 function updateIndex() {
     rooms.forEach(room => {
-        if(room.playlist.length !== 0) {
-            if(getTime(room) > room.playlist[room.index].duration) {
-                if(room.loop === false) {
-                    if(room.index === (room.playlist.length - 1)) {
-                        room.index = 0
-                        room.path = room.playlist[0].path
-                        room.duration = room.playlist[0].duration
-                    } else {
-                        room.index++
-                        room.path = room.playlist[room.index].path
-                        room.duration = room.playlist[room.index].duration
-                    }
+        if(room.autoplay === true &&
+            room.playlist.length !== 0 && 
+            getTime(room) > room.playlist[room.index].duration) {
+            if(room.loop === false) {
+                if(room.index === (room.playlist.length - 1)) {
+                    room.index = 0
+                    room.path = room.playlist[0].path
+                    room.duration = room.playlist[0].duration
+                } 
+                else {
+                    room.index++
+                    room.path = room.playlist[room.index].path
+                    room.duration = room.playlist[room.index].duration
                 }
-                setTime(room, 0)
-                api.patchStatus(room, room, Scope.LOCAL)
-                api.patchRooms(allClients, rooms, Scope.GLOBAL)
             }
+            setTime(room, 0)
+            api.patchStatus(room, room, Scope.LOCAL)
+            api.patchRooms(allClients, rooms, Scope.GLOBAL)
         }
     })
     clearInterval(intervalID)
@@ -220,6 +221,14 @@ wss.on('request', request => {
                     room.path = room.playlist[room.index].path
                     room.time = 0
                     api.patchStatus(room, room, Scope.LOCAL)
+                    break
+                case Type.AUTOPLAY:
+                    room = getRoom(msg[1].room)
+                    room.autoplay = msg[1].autoplay
+                    break
+                case Type.LOOP:
+                    room = getRoom(msg[1].room)
+                    room.loop = msg[1].loop
                     break
             }
 
