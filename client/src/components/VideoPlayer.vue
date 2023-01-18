@@ -89,7 +89,7 @@ onUpdated(() => {
             <Chat />
         </div>
         <div class="controls">
-            <div style="display: flex; justify-content: space-between; padding: 0px 10px;">
+            <div style="display: flex; justify-content: center; padding: 0px 10px;">
                 <div class="info">
                     <p>{{ formatPath(currentRoom.path) }}</p>
                     <p style="margin: 0px 10px;">-</p>
@@ -117,6 +117,7 @@ onUpdated(() => {
 }
 .info{
     display: flex;
+    margin-right: 100px;
 }
 video::-webkit-media-controls-enclosure {
   display:none !important;
@@ -129,11 +130,11 @@ video::-webkit-media-controls-enclosure {
     width: 100%;
 }
 .video-player {
-    width: 70vw;
+    width: 110%;
     max-height: 70vh;
-    margin-right: 10px;
     box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
     border-radius: 8px;
+    background-color: black;
 }
 .controls {
     position: fixed;

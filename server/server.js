@@ -219,6 +219,7 @@ wss.on('request', request => {
                     room = getRoom(msg[1].room)
                     if(room.loop !== true) {
                         room.index = msg[1].index
+                        room.duration = room.playlist[room.index].duration
                         room.path = room.playlist[room.index].path
                     }
                     room.time = 0
