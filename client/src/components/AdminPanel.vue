@@ -7,11 +7,21 @@ import feather from 'feather-icons';
 
 const mainStore = useMainStore()
 const { video, ws, currentRoom, time } = storeToRefs(mainStore)
+const autoplay = ref(true)
+const loop = ref(false)
 const inputTime = ref(null)
 const path = ref('')
 
-function play() {
+function setPlay() {
     api.patchPlay(ws.value, currentRoom.value.name)
+}
+
+function setAutoplay() {
+    api.patchAutoplay(ws.value, currentRoom.value.name, !autoplay.value)
+}
+
+function setLoop() {
+    api.patchLoop(ws.value, currentRoom.value.name, !loop.value)
 }
 
 function syncClients() {
@@ -62,15 +72,15 @@ onUpdated(()=> {
         <div class="wrapper">
             <button @click="setIndex(-1)" type="button">prev</button>
             <button @click="setIndex(1)" type="button">next</button>
-            <button @click="play()" type="button"><i data-feather="play"></i><i style="margin-left: -16px;" data-feather="pause"></i></button>
+            <button @click="setPlay()" type="button"><i data-feather="play"></i><i style="margin-left: -16px;" data-feather="pause"></i></button>
+            <label>autoplay<input @click="setAutoplay()" type="checkbox" v-model="autoplay"></label>
+            <label>loop<input @click="setLoop()" type="checkbox" v-model="loop"></label>
             <button @click="syncClients()" type="button">sync clients</button>
             <button @click="clearChat()" type="button">clear chat</button>
             <div style="display: flex;">
             <input @keyup.enter="setTime(time + inputTime); inputTime = null" v-model="inputTime" type="number" placeholder="Add time in sec." min="0">
             <input @keyup.enter="setPath(path)" v-model="path" type="text" placeholder="Path">
         </div>
-        </div>
-        
         <div style="display: flex;">
             <p style="margin-right: 10px;">{{ formatTime(time) }}</p>
             <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
