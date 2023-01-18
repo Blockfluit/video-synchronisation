@@ -35,10 +35,9 @@ onUpdated(() => {
 <style scoped>
 .panel-container {
     display: flex;
-    padding: 5px;
     align-items: center; 
     justify-content: space-between; 
-    width: 300px;
+    width: 250px;
 }
 
 button{
@@ -54,5 +53,10 @@ svg {
 }
 .button:hover {
     stroke: #bbbbbb;
+}
+@media screen and (max-width: 380px) {
+    input {
+        width: 50px;
+    }
 }
 </style>

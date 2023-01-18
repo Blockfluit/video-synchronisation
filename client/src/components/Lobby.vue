@@ -82,7 +82,7 @@ onUpdated(()=> {
 <template>
   <div class="container">
     <div class="cinema-wrapper">
-      <h1 style="margin-left: 10px;">Cinema's</h1>
+      <h1>Cinema's</h1>
       <div class="cinema-container">
       <template class="scroll" v-for="room in rooms">
         <li class="cinema-card" @click="onClick(room)" v-if="room.type === 'cinema'">
@@ -164,6 +164,7 @@ onUpdated(()=> {
 </template>
 
 <style scoped>
+
 .container {
   display: flex;
   flex-direction: column;
@@ -172,7 +173,7 @@ onUpdated(()=> {
 }
 
 .container h1 {
-  margin-top: 5vh;
+  margin-top: 20px;
 }
 .cinema-card {
   width: 40vw;
@@ -184,9 +185,10 @@ onUpdated(()=> {
   border-radius: 8px;
   margin-bottom: 30px;
   margin: 0px 10px;
+  transition: all .3s ease;
 }
 .cinema-card:hover {
-  box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
   cursor: pointer;
 }
 .cinema-container {
@@ -195,6 +197,9 @@ onUpdated(()=> {
   overflow-x: auto;
   overflow-y: hidden;
   height: 41vh;
+  -webkit-box-shadow: inset 0px 0px 50px -3px rgba(0,0,0,0.6); 
+  box-shadow: inset 0px 0px 50px -3px rgba(0,0,0,0.6);
+  border-radius: 8px;
 }
 .cinema-wrapper {
   height: 50vh;
@@ -213,21 +218,19 @@ onUpdated(()=> {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
-.rooms-wrapper h1 {
-  padding-left: 10px;
-}
 .rooms-container {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  padding: 10px 10px;
+  padding: 10px 0px;
   height: 30vh;
   border-radius: 8px;
+  -webkit-box-shadow: inset 0px 0px 50px -3px rgba(0,0,0,0.6); 
+  box-shadow: inset 0px 0px 50px -3px rgba(0,0,0,0.6);
+  border-radius: 8px;
 }
-.rooms-wrapper{
-  height: 50vh;
-}
+
 .room-participants {
   display: flex;
   align-items: center;
@@ -261,16 +264,17 @@ onUpdated(()=> {
   font-size: 12px;
 }
 .room-card {
-  margin-right: 20px;
+  margin: 0px 10px;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.6);
   border-radius: 8px;
   min-width: 350px;
   max-width: 350px;
   cursor: pointer;
   position: relative;
+  transition: all .3s ease;
 }
 .room-card:hover {
-  box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
 }
 .room-info {
   display: flex;
@@ -363,6 +367,35 @@ li {
 @keyframes blinker {
   50% {
     opacity: 0;
+  }
+}
+
+
+@media screen and (max-width: 759px){
+  .cinema-card{
+    min-width: 300px;
+    max-width: 300px;
+  }
+  .room-card{
+    min-width: 300px;
+    max-width: 300px;
+  }
+  .container{
+    padding: 0px 10px 0px 10px;
+  }
+  .container h1{
+    padding: 0px;
+    margin-left: 0px;
+  }
+}
+@media screen and (max-width: 460px){
+  .cinema-card{
+    min-width: 250px;
+    max-width: 250px;
+  }
+  .room-card{
+    min-width: 250px;
+    max-width: 250px;
   }
 }
 </style>

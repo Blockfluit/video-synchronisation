@@ -39,8 +39,7 @@ function sendChat() {
     justify-content: space-between;
     box-shadow: inset 0px 0px 8px 0px rgba(0,0,0,0.6);
     border-radius: 8px;
-    margin-right: 3%;
-    min-width: 20vw;
+    width: 100%;
 }
 input {
     display: flex;
@@ -103,5 +102,16 @@ li {
 
 .right {
     text-align: right;
+}
+
+@media screen and (max-width: 759px) {
+    .chat-container{
+        height: 25vh;
+    }
+}
+@media screen and (max-width: 460px){
+  .chat-container{
+        height: 40vh;
+    }
 }
 </style>
