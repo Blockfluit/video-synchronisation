@@ -77,38 +77,47 @@ onUpdated(() => {
 
 
 <template>
-    <div @click="onClick()" class="back-wrapper">
-        <i data-feather="chevron-left"></i>
-        <h1 style="margin-left: 10px;" >{{ currentRoom.name }}</h1>
-    </div>
-    <div class="horizontal-container">
-        <video ref="video" class="video-player">
-            <source :src="currentRoom.path" type="video/mp4">
-        </video>
-        <Chat />
-    </div>
-    <div style="margin-left: 50px; margin-top: 5px;">
-        <div style="display: flex; justify-content: space-between; width: 70vw;">
-            <ClientPanel/>
-            <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
-            <p>{{ formatPath(currentRoom.path) }}</p>
-            
+    <div class="container">
+        <div @click="onClick()" class="back-wrapper">
+            <i data-feather="chevron-left"></i>
+            <h1 style="margin-left: 10px;" >{{ currentRoom.name }}</h1>
         </div>
-        <AdminPanel v-if="isAdmin"/>
+        <div class="horizontal-container">
+            <video ref="video" class="video-player">
+                <source :src="currentRoom.path" type="video/mp4">
+            </video>
+            <Chat />
+        </div>
+        <div class="controls">
+            <div style="display: flex; justify-content: space-between; padding: 0px 10px;">
+                <div class="info">
+                    <p>{{ formatPath(currentRoom.path) }}</p>
+                    <p style="margin: 0px 10px;">-</p>
+                    <p>{{ formatTime(time) + '/' + formatTime(currentRoom.duration) }}</p>
+                </div>
+                <ClientPanel/>
+            </div>
+            <AdminPanel v-if="isAdmin"/>
+        </div>
     </div>
 </template>
 
 
 
 <style scoped>
+.container{
+    padding: 0px 50px;
+}
 .back-wrapper {
     display: flex;
     align-items: center;
     width: 250px;
-    margin: 20px 0px 0px 20px; 
+    margin-top: 20px; 
     cursor: pointer;
 }
-
+.info{
+    display: flex;
+}
 video::-webkit-media-controls-enclosure {
   display:none !important;
 }
@@ -122,11 +131,40 @@ video::-webkit-media-controls-enclosure {
 .video-player {
     width: 70vw;
     max-height: 70vh;
-    margin-left: 50px;
-}
-
-video {
+    margin-right: 10px;
     box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
     border-radius: 8px;
+}
+.controls {
+    position: fixed;
+    padding: 10px 0px;
+    left: 0;
+    bottom: 0;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.6);
+    width: 100%;
+}
+
+
+@media screen and (max-width: 759px){
+    .container{
+        padding: 0px 10px;
+    }
+  .video-player{
+    margin: 0px 0px 10px 0px;
+    width: 100%;
+  }
+  .horizontal-container{
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 460px){
+  .cinema-card{
+    min-width: 250px;
+    max-width: 250px;
+  }
+  .room-card{
+    min-width: 250px;
+    max-width: 250px;
+  }
 }
 </style>

@@ -77,20 +77,21 @@ onUpdated(()=> {
             <label>loop<input @click="setLoop()" type="checkbox" v-model="loop"></label>
             <button @click="syncClients()" type="button">sync clients</button>
             <button @click="clearChat()" type="button">clear chat</button>
+            <div style="display: flex;">
             <input @keyup.enter="setTime(time + inputTime); inputTime = null" v-model="inputTime" type="number" placeholder="Add time in sec." min="0">
             <input @keyup.enter="setPath(path)" v-model="path" type="text" placeholder="Path">
         </div>
-        <p>{{ formatTime(time) }}</p>
-        <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
+        <div style="display: flex;">
+            <p style="margin-right: 10px;">{{ formatTime(time) }}</p>
+            <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
+        </div>
     </div>
 </template>
 
 <style scoped>
 .panel-container {
     border-radius: 8px;
-    margin-top: 10px;
-    margin-right: 50px;
-    padding: 5px;
+    padding: 10px 10px;
 }
 .wrapper {
     display: flex;
