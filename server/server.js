@@ -217,8 +217,10 @@ wss.on('request', request => {
                     break
                 case Type.INDEX:
                     room = getRoom(msg[1].room)
-                    room.index = msg[1].index
-                    room.path = room.playlist[room.index].path
+                    if(room.loop !== true) {
+                        room.index = msg[1].index
+                        room.path = room.playlist[room.index].path
+                    }
                     room.time = 0
                     api.patchStatus(room, room, Scope.LOCAL)
                     break
