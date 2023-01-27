@@ -78,13 +78,11 @@ onUpdated(()=> {
             <button @click="syncClients()" type="button">sync clients</button>
             <button @click="clearChat()" type="button">clear chat</button>
             <div style="display: flex;">
-            <input @keyup.enter="setTime(time + inputTime); inputTime = null" v-model="inputTime" type="number" placeholder="Add time in sec." min="0">
-            <input @keyup.enter="setPath(path)" v-model="path" type="text" placeholder="Path">
+                <input @keyup.enter="setTime(time + inputTime); inputTime = null" v-model="inputTime" type="number" placeholder="Add time in sec." min="0">
+                <input @keyup.enter="setPath(path)" v-model="path" type="text" placeholder="Path">
+            </div>
         </div>
-        <div style="display: flex;">
-            <p style="margin-right: 10px;">{{ formatTime(time) }}</p>
-            <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
-        </div>
+        <input class="time-slider" @change="setTime(time)" @input="() => video.currentTime = time" v-model="time" type="range" :max="currentRoom.duration">
     </div>
 </template>
 
@@ -106,6 +104,14 @@ button{
     border: none;
     color: #f1f1f1;
     cursor: pointer;
+    font-size: 12px;
+}
+label {
+    display: flex;
+    font-size: 12px;
+}
+input[type="checkbox"]{
+    margin-left: 5px;
 }
 button:hover{
     color: #bbbbbb;
